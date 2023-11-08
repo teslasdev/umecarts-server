@@ -1,10 +1,11 @@
 const express = require("express");
 const cors = require("cors");
-
+const  dotenv  = require('dotenv');
 const app = express();
 
+dotenv.config();
 var corsOptions = {
-  origin: "http://localhost:3001"
+  origin: "http://localhost:3000"
 };
 
 app.use(cors(corsOptions));
@@ -20,8 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 //Authentication Rountes
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
-
-
+require('./routes/general.routes')(app);
 // DATABASE INIT
 
 const db = require("./models");

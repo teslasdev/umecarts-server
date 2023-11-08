@@ -11,8 +11,9 @@ var bcrypt = require("bcryptjs");
 
 exports.signup = (req, res) => {
   // Save User to Database
+  const uniqueId = 'UM' + Math.floor(Math.random() * 999999);
   const {firstname , lastname , email , password, role , shopName , shopAddress } = req.body
-  User.create({firstname: firstname, lastname: lastname,email: email, password: bcrypt.hashSync(password, 8)})
+  User.create({firstname: firstname, lastname: lastname, uniqueId : uniqueId, email: email, password: bcrypt.hashSync(password, 8)})
    .then(user => {
       if (role) {
          Role.findAll({
@@ -23,18 +24,24 @@ exports.signup = (req, res) => {
           }
           }).then(role => {
             user.setRoles(role).then(() => {
-              return res.status(200).send({ message: "User was registered successfully!" });
+              return res.status(200).send({ 
+              message: "User was registered successfully!", 
+              data : uniqueId 
+            });
             });
           });
           if(role === "Seller") {
             Shop.create({userId : user.id , shopName : shopName , shopLocation : shopAddress}).then(shop => {
-              console.log(shop)
+              console.log('Shop Created')
             })
           }
       } else { 
         // user role = 1
         user.setRoles([1]).then(() => {
-         return res.status(200).send({ message: "User was registered successfully!" });
+          return res.status(200).send({ 
+            message: "User was registered successfully!", 
+            data : uniqueId 
+          });
         });
       }
     })
@@ -68,26 +75,49 @@ exports.signin = (req, res) => {
 
       const token = jwt.sign({ id: user.id },
          config.secret,
-         {
+          {
            algorithm: 'HS256',
            allowInsecureKeySizes: true,
            expiresIn: 86400, // 24 hours
-         });
+          });
 
       var authorities = [];
       user.getRoles().then(roles => {
         for (let i = 0; i < roles.length; i++) {
           authorities.push("ROLE_" + roles[i].name.toUpperCase());
         }
-         return res.status(200).send({
+          return res.status(200).send({
             id: user.id,
             email: user.email,
-            roles: authorities,
-            accessToken: token
-         });
+            uniqueId: user.uniqueId,
+            accessToken: token,
+            role : authorities
+          });
       });
     })
     .catch(err => {
       res.status(500).send({ message: err.message });
     });
+};
+
+exports.getMe = async (req, res) => {
+	try {
+		const user = await User.findByPk(req.userId).then(user => {
+      Shop.findOne(
+        { where : {
+          userId : req.userId
+        }
+      }).then(shop => {
+        return res.status(200).json({
+          success: true,
+          data : {
+            user,
+            shop,
+          },
+        });
+      })
+    })
+	} catch (err) {
+		return res.status(500).send({ message: err.message });
+	}
 };
