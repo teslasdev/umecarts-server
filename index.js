@@ -27,6 +27,7 @@ require('./routes/general.routes')(app);
 const db = require("./models");
 const Role = db.role;
 db.sequelize.sync().then(() => {
+  initial()
    console.log('Drop and Resync Db');
 });
 
