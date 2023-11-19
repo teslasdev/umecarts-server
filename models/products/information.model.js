@@ -3,23 +3,14 @@ module.exports = (sequelize, Sequelize) => {
       user_id: {
          type: Sequelize.INTEGER,
       },
-      product_id: {
-         type: Sequelize.INTEGER
-      },
       product_name: {
          type: Sequelize.STRING
       },
-      category: {
+      categoryId: {
          type: Sequelize.INTEGER
       },
       brands: {
-         type: Sequelize.TEXT,
-         get : function () {
-            return JSON.parse(this.getDataValue('brands'));
-         },
-         set : function(value) {
-            return this.setDataValue('brands' , JSON.stringify(value));
-         }
+         type: Sequelize.STRING
       },
       unit: {
          type: Sequelize.STRING,
@@ -36,7 +27,36 @@ module.exports = (sequelize, Sequelize) => {
             return this.setDataValue('tags' , JSON.stringify(value));
          }
       },
+      description : {
+         type: Sequelize.TEXT,
+      },
+      low_quantity : {
+         type: Sequelize.INTEGER,
+      },
+      stock_quantity : {
+         type: Sequelize.BOOLEAN,
+      },
+      stock_with_text : {
+         type: Sequelize.BOOLEAN,
+      },
+      stock_visible : {
+         type: Sequelize.BOOLEAN,
+      },
+      cash_refund : {
+         type: Sequelize.BOOLEAN,
+      },
+      cash_on_delivery : {
+         type: Sequelize.BOOLEAN,
+      },
+      cash_refund : {
+         type: Sequelize.BOOLEAN,
+      },
+      cash_refund : {
+         type: Sequelize.BOOLEAN,
+      },
+      shipping_days : {
+         type: Sequelize.INTEGER,
+      }
    });
- 
    return Information;
  };

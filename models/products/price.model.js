@@ -1,8 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
    const Price = sequelize.define("price", {
-      product_id: {
-         type: Sequelize.INTEGER
-      },
       unit_price: {
          type: Sequelize.INTEGER,
       },
@@ -15,12 +12,15 @@ module.exports = (sequelize, Sequelize) => {
             return this.setDataValue('discount_date_range' , JSON.stringify(value));
          }
       },
-      discount_price: {
+      discount: {
+         type: Sequelize.TEXT,
+      },
+      discount_flat: {
          type: Sequelize.INTEGER,
       },
-      external_link : {
-         type: Sequelize.TEXT,
-      }
+      discount_percentage: {
+         type: Sequelize.INTEGER,
+      },
    });
  
    return Price;

@@ -17,8 +17,10 @@ module.exports = function(app) {
    app.get("/api/brand/:categoryId", brand.findAll);
 
    // *******Products Routes******** //
-   app.post("/api/product", product.create);
+   app.post("/api/product",[authJwt.verifyToken],product.create);
    app.get("/api/product/tags",[authJwt.verifyToken], product.findAllTags);
+   app.get("/api/product/:id", product.findOne);
+   app.get("/api/product/slug/:slug", product.findbySlug);
 
    // *******Upload******** //
    app.post("/api/upload", upload.upload , uploadFiles)

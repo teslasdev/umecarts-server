@@ -27,8 +27,9 @@ module.exports = (sequelize, Sequelize) => {
       specification_id: {
          type: Sequelize.INTEGER,
       },
-      meta_id: {
-         type: Sequelize.INTEGER,
+      isPublished: {
+         type: Sequelize.BOOLEAN,
+         default : false,
       }
    });
  

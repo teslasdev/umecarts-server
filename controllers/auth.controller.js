@@ -11,19 +11,22 @@ var bcrypt = require("bcryptjs");
 
 exports.signup = (req, res) => {
   // Save User to Database
+  const roleCont =[]
   const uniqueId = 'UM' + Math.floor(Math.random() * 999999);
   const {firstname , lastname , email , password, role , shopName , shopAddress } = req.body
+  roleCont.push(role)
+  console.log(roleCont)
   User.create({firstname: firstname, lastname: lastname, uniqueId : uniqueId, email: email, password: bcrypt.hashSync(password, 8)})
    .then(user => {
       if (role) {
          Role.findAll({
           where: {
             name: {
-              [Op.or]: req.body.roles
+              [Op.or]: roleCont
             }
           }
-          }).then(role => {
-            user.setRoles(role).then(() => {
+          }).then(roles => {
+            user.setRoles(roles).then(() => {
               return res.status(200).send({ 
               message: "User was registered successfully!", 
               data : uniqueId 
@@ -86,13 +89,20 @@ exports.signin = (req, res) => {
         for (let i = 0; i < roles.length; i++) {
           authorities.push("ROLE_" + roles[i].name.toUpperCase());
         }
+        Shop.findOne({ where : 
+          {
+            userId : user.id
+          }
+        }).then(shop => {
           return res.status(200).send({
             id: user.id,
             email: user.email,
             uniqueId: user.uniqueId,
             accessToken: token,
-            role : authorities
+            role : authorities,
+            shop
           });
+        })
       });
     })
     .catch(err => {
@@ -112,7 +122,7 @@ exports.getMe = async (req, res) => {
           success: true,
           data : {
             user,
-            shop,
+            shop
           },
         });
       })

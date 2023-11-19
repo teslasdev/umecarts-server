@@ -27,7 +27,7 @@ db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.shop = require("../models/shop.model.js")(sequelize, Sequelize);
 db.products = require("../models/products/products.model.js")(sequelize, Sequelize);
 db.informaton = require("../models/products/information.model.js")(sequelize, Sequelize);
-db.image = require("../models/products/image.model.js")(sequelize, Sequelize);
+db.Image = require("../models/products/image.model.js")(sequelize, Sequelize);
 db.video = require("../models/products/video.model.js")(sequelize, Sequelize);
 db.price = require("../models/products/price.model.js")(sequelize, Sequelize);
 db.specification = require("../models/products/specification.model.js")(sequelize, Sequelize);
@@ -41,9 +41,9 @@ db.role.belongsToMany(db.user, {
 db.user.belongsToMany(db.role, {
   through: "user_roles"
 });
-db.user.belongsToMany(db.role, {
+  db.user.belongsToMany(db.role, {
    through: "user_roles"
- });
+  });
 
 db.ROLES = ["Buyer", "Seller", "Admin"];
 
