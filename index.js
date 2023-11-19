@@ -5,7 +5,7 @@ const app = express();
 
 dotenv.config();
 var corsOptions = {
-  origin: "http://localhost:3000"
+  origin: "https://umecarts.vercel.app/"
 };
 
 app.use(cors(corsOptions));
