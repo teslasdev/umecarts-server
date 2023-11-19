@@ -78,7 +78,7 @@ exports.create = (req, res) => {
     discount_percentage : discount_Percentage
   };
 
-  var  slug  = product_name.replace('','-');
+  var  slug  = product_name.replace(' ','-');
  // Save Information in the database
   Information.create(information)
   .then(data => {
