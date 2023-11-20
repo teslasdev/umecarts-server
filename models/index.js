@@ -42,10 +42,13 @@ db.role.belongsToMany(db.user, {
 db.user.belongsToMany(db.role, {
   through: "user_roles"
 });
-  db.user.belongsToMany(db.role, {
-   through: "user_roles"
-  });
+db.user.belongsToMany(db.role, {
+  through: "user_roles"
+});
 
+db.products.belongsTo(db.informaton, {foreignKey: 'information_id'})
+db.products.belongsTo(db.price, {foreignKey: 'price_id'})
+db.products.belongsTo(db.Image, {foreignKey: 'images_id'})
 db.ROLES = ["Buyer", "Seller", "Admin"];
 
 module.exports = db;

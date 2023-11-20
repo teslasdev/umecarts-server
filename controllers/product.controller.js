@@ -78,7 +78,7 @@ exports.create = (req, res) => {
     discount_percentage : discount_Percentage
   };
 
-  var  slug  = product_name.replace(' ','-');
+  var  slug  = product_name.replaceAll(' ','-');
  // Save Information in the database
   Information.create(information)
   .then(data => {
@@ -134,6 +134,28 @@ exports.findOne = (req, res) => {
   })
 };
 
+
+// Retrieve all Products from the database.
+exports.findAll = (req, res) => {
+  const id = req.userId;
+  Product.findAll({
+    where : {
+      user_id : id
+    },
+    include: [Information , Price , Image]
+  }).then(product => {
+    if(product) {
+      return res.status(200).send({
+        product,
+        success : true
+      });
+    } else {
+      res.status(404).send({
+        message: `Cannot find Product with id=${id}.`
+      });
+    }
+  })
+};
 
 // Retrieve all Products from the database.
 exports.findbySlug = (req, res) => {

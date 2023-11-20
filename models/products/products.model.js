@@ -29,7 +29,11 @@ module.exports = (sequelize, Sequelize) => {
       },
       isPublished: {
          type: Sequelize.BOOLEAN,
-         default : false,
+         defaultValue: 0
+      },
+      isFeatured: {
+         type: Sequelize.BOOLEAN,
+         defaultValue: 0
       }
    });
  

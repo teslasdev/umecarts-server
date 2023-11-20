@@ -19,6 +19,7 @@ module.exports = function(app) {
    // *******Products Routes******** //
    app.post("/api/product",[authJwt.verifyToken],product.create);
    app.get("/api/product/tags",[authJwt.verifyToken], product.findAllTags);
+   app.get("/api/product/", [authJwt.verifyToken],product.findAll);
    app.get("/api/product/:id", product.findOne);
    app.get("/api/product/slug/:slug", product.findbySlug);
 
