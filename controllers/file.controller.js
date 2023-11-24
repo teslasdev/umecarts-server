@@ -25,7 +25,8 @@ exports.upload = multer({
       });
     },
     key: (req, file, cb) => {
-      cb(null, file.originalname);
+      const ext = file.mimetype.split("/")[1];
+      cb(null, `${file.fieldname}-${Date.now()}.${ext}`);
     },
   }),
 }).array('files', 100);

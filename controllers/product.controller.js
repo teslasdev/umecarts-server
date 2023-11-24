@@ -73,6 +73,7 @@ exports.create = (req, res) => {
    // Create a Price
   const price = {
     unit_price : unit_price,
+    discount_date_range : discount_date_range,
     discount : flat,
     discount_flat : discount_Flat,
     discount_percentage : discount_Percentage
