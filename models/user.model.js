@@ -12,6 +12,9 @@ module.exports = (sequelize, Sequelize) => {
       email: {
          type: Sequelize.STRING
       },
+      walletId: {
+         type: Sequelize.INTEGER,
+      },
       password: {
          type: Sequelize.STRING
       }

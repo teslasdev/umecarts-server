@@ -1,6 +1,6 @@
 const db = require("../models");
 const Information = db.informaton; 
-const Products = db.category;
+const Category = db.category;
 const Product = db.products 
 const Image = db.Image
 const Video = db.video
@@ -27,7 +27,7 @@ exports.create = (req, res) => {
     provider,
     flat,
     meta_image,
-    meta_slug,
+    discount_date_range,
     low_quantity,
     stock_quantity,
     stock_with_text,
@@ -173,7 +173,7 @@ exports.findbySlug = (req, res) => {
         }
       }).then(product => {
         Information.findByPk(product.information_id).then(information => {
-          Image.findByPk(product.information_id).then(image => {
+          Image.findByPk(product.images_id).then(image => {
             Price.findByPk(product.price_id).then(price => {
               return res.status(200).send({
                 product,
@@ -203,7 +203,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
    const id = req.params.id;
  
-   Products.destroy(req.body, {
+   Product.destroy(req.body, {
      where: { id: id }
    })
    .then(num => {
@@ -226,7 +226,7 @@ exports.delete = (req, res) => {
 
 // Delete all Products from the database.
 exports.deleteAll = (req, res) => {
-   Products.destroy({
+   Product.destroy({
      where: {},
      truncate: false
    })
@@ -242,17 +242,32 @@ exports.deleteAll = (req, res) => {
  };
 
 // Find all published Products
-exports.findAllPublished = (req, res) => {
-   Products.findAll({ where: { published: true } })
-      .then(data => {
-        res.send(data);
-      })
-      .catch(err => {
-         res.status(500).send({
-            message:
-               err.message || "Some error occurred while retrieving Products."
-         });
+exports.findAndUpdate = (req, res) => {
+  const id = req.params.id;
+  const {status , featured} = req.body
+  const updateData = {
+    isPublished : status,
+    isFeatured : featured
+  }
+  Product.update(updateData, {
+    where: { id: id }
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "Products was updated successfully."
+        });
+      } else {
+        res.send({
+          message: `Cannot update Products with id=${id}. Maybe Products was not found`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error updating Products with id=" + id
       });
+    });
 };
 
 // Retrieve all Products Tag from the database.

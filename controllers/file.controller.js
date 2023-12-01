@@ -21,12 +21,11 @@ exports.upload = multer({
     acl: 'public-read',
     metadata: (req, file, cb) => {
       cb(null, {
-        fieldName: file.fieldname,
+        fieldName: `${Date.now()}-${file.originalname}`,
       });
     },
     key: (req, file, cb) => {
-      const ext = file.mimetype.split("/")[1];
-      cb(null, `${file.fieldname}-${Date.now()}.${ext}`);
+      cb(null, `${Date.now()}-${file.originalname}`)
     },
   }),
 }).array('files', 100);

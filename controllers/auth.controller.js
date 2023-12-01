@@ -3,7 +3,7 @@ const config = require("../config/auth.config");
 const User = db.user;
 const Role = db.role;
 const Shop = db.shop;
-
+const Wallet = db.wallet;
 const Op = db.Sequelize.Op;
 
 var jwt = require("jsonwebtoken");
@@ -16,8 +16,9 @@ exports.signup = (req, res) => {
   const {firstname , lastname , email , password, role , shopName , shopAddress } = req.body
   roleCont.push(role)
   console.log(roleCont)
-  User.create({firstname: firstname, lastname: lastname, uniqueId : uniqueId, email: email, password: bcrypt.hashSync(password, 8)})
-   .then(user => {
+  Wallet.create().then(wallet => {
+    User.create({firstname: firstname, lastname: lastname, uniqueId : uniqueId, email: email, password: bcrypt.hashSync(password, 8) , walletId : wallet.id })
+    .then(user => {
       if (role) {
          Role.findAll({
           where: {
@@ -51,6 +52,7 @@ exports.signup = (req, res) => {
     .catch(err => {
       return res.status(500).send({ message: err.message });
     });
+  })
 };
 
 exports.signin = (req, res) => {
@@ -112,11 +114,11 @@ exports.signin = (req, res) => {
 
 exports.getMe = async (req, res) => {
 	try {
-		const user = await User.findByPk(req.userId).then(user => {
+		const user = await User.findByPk(req.userId ,{include: [Wallet]}).then(user => {
       Shop.findOne(
         { where : {
           userId : req.userId
-        }
+        },
       }).then(shop => {
         return res.status(200).json({
           success: true,

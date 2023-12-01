@@ -35,6 +35,7 @@ db.specification = require("../models/products/specification.model.js")(sequeliz
 db.meta = require("./products/meta.model.js")(sequelize, Sequelize);
 db.category = require("../models/category.model.js")(sequelize, Sequelize);
 db.brand = require("../models/brand.model.js")(sequelize, Sequelize);
+db.wallet = require("../models/wallet.model.js")(sequelize, Sequelize);
 db.gallery = require("../models/gallery.model.js")(sequelize, Sequelize);
 db.role.belongsToMany(db.user, {
   through: "user_roles"
@@ -49,6 +50,7 @@ db.user.belongsToMany(db.role, {
 db.products.belongsTo(db.informaton, {foreignKey: 'information_id'})
 db.products.belongsTo(db.price, {foreignKey: 'price_id'})
 db.products.belongsTo(db.Image, {foreignKey: 'images_id'})
+db.user.belongsTo(db.wallet, {through: 'id'})
 db.ROLES = ["Buyer", "Seller", "Admin"];
 
 module.exports = db;
