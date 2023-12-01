@@ -27,6 +27,7 @@ exports.create = (req, res) => {
     provider,
     flat,
     meta_image,
+    meta_slug,
     discount_date_range,
     low_quantity,
     stock_quantity,
@@ -78,8 +79,6 @@ exports.create = (req, res) => {
     discount_flat : discount_Flat,
     discount_percentage : discount_Percentage
   };
-
-  var  slug  = product_name.replace(/\\/g,'-')
  // Save Information in the database
   Information.create(information)
   .then(data => {
@@ -92,7 +91,7 @@ exports.create = (req, res) => {
               title : meta_title,
               image : meta_image,
               description : meta_description,
-              slug : slug
+              slug : meta_slug
             })
             .then(meta => {
               return res.status(200).send({
