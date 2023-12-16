@@ -1,3 +1,3 @@
 module.exports = {
-   secret: "umecarts-secret-key"
- };
+  secret: "umecarts-secret-key"
+};

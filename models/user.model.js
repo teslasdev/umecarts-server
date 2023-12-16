@@ -15,6 +15,21 @@ module.exports = (sequelize, Sequelize) => {
       walletId: {
          type: Sequelize.INTEGER,
       },
+      phone_number: {
+         type: Sequelize.TEXT,
+      },
+      bank_details: {
+         type: Sequelize.TEXT,
+         get : function () {
+            return JSON.parse(this.getDataValue('bank_details'));
+         },
+         set : function(value) {
+            return this.setDataValue('bank_details' , JSON.stringify(value));
+         }
+      },
+      profile_picture: {
+         type: Sequelize.TEXT,
+      },
       password: {
          type: Sequelize.STRING
       }

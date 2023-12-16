@@ -26,7 +26,7 @@ require('./routes/general.routes')(app);
 
 const db = require("./models");
 const Role = db.role;
-db.sequelize.sync().then(() => {
+db.sequelize.sync({ alter: true }).then(() => {
    console.log('Drop and Resync Db');
 });
 
@@ -52,7 +52,7 @@ app.get("/", (req, res) => {
 });
 
 // set port, listen for requests
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
 });

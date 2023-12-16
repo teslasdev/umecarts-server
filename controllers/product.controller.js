@@ -1,6 +1,5 @@
 const db = require("../models");
 const Information = db.informaton; 
-const Category = db.category;
 const Product = db.products 
 const Image = db.Image
 const Video = db.video
@@ -248,7 +247,7 @@ exports.findAndUpdate = (req, res) => {
     isPublished : status,
     isFeatured : featured
   }
-  Product.update(updateData, {
+Product.update(updateData, {
     where: { id: id }
   })
     .then(num => {
