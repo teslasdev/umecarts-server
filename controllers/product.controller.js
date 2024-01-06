@@ -79,26 +79,28 @@ exports.create = (req, res) => {
     discount_flat: discount_Flat,
     discount_percentage: discount_Percentage,
   };
+
+  const meta = {
+    title: meta_title,
+    image: meta_image,
+    description: meta_description,
+    slug: meta_slug,
+  };
   // Save Information in the database
   Information.create(information)
     .then((data) => {
       Image.create(image).then((image) => {
         Video.create(video).then((video) => {
           Price.create(price).then((price) => {
-            Product.create({
-              user_id: req.userId,
-              information_id: data.id,
-              images_id: image.id,
-              videos_id: video.id,
-              price_id: price.id,
-            }).then((data) => {
-              Meta.create({
-                product_id: data.id,
-                title: meta_title,
-                image: meta_image,
-                description: meta_description,
-                slug: meta_slug,
-              }).then((meta) => {
+            Meta.create(meta).then((meta) => {
+              Product.create({
+                user_id: req.userId,
+                information_id: data.id,
+                images_id: image.id,
+                videos_id: video.id,
+                price_id: price.id,
+                meta_id : meta.id
+              }).then((data) => {
                 return res.status(200).send({
                   information,
                   data,
@@ -187,7 +189,7 @@ exports.findbySlug = (req, res) => {
     if (meta) {
       Product.findOne({
         where: {
-          id: meta.product_id,
+          meta_id: meta.id,
         },
       }).then((product) => {
         Information.findByPk(product.information_id).then((information) => {
@@ -308,42 +310,38 @@ exports.findAllTags = (req, res) => {
 };
 
 exports.addToCart = (req, res) => {
-  const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  const {product} = req.body;
+  const ipAddress =
+    req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  const { product } = req.body;
   try {
-    Cart.create(
-      {
-        product: product,
-        ipAddress : ipAddress
-      }
-    ).then(cart => {
+    Cart.create({
+      product: product,
+      ipAddress: ipAddress,
+    }).then((cart) => {
       res.status(200).send({
-        success : true,
-      })
-    })
+        success: true,
+      });
+    });
   } catch (err) {
     return res.status(500).send({ message: err.message });
   }
 };
 
-
 exports.getUserIpAddress = (req, res) => {
   try {
-    const ipAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const ipAddress =
+      req.headers["x-forwarded-for"] || req.connection.remoteAddress;
     Cart.findAll({
-      where : {
-        ipAddress : ipAddress,
-      }
-    }).then(cart => {
-        res.status(200).json({
-          cart,
-          success : true
-        })
-    })
-    
-  }
-  catch(err) {
+      where: {
+        ipAddress: ipAddress,
+      },
+    }).then((cart) => {
+      res.status(200).json({
+        cart,
+        success: true,
+      });
+    });
+  } catch (err) {
     return res.status(500).send({ message: err.message });
   }
- 
-}
+};
