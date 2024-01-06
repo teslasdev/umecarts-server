@@ -15,7 +15,6 @@ exports.signup = (req, res) => {
   const uniqueId = 'UM' + Math.floor(Math.random() * 999999);
   const {firstname , lastname , email , password, role , shopName , shopAddress } = req.body
   roleCont.push(role)
-  console.log(roleCont)
   Wallet.create().then(wallet => {
     User.create({firstname: firstname, lastname: lastname, uniqueId : uniqueId, email: email, password: bcrypt.hashSync(password, 8) , walletId : wallet.id })
     .then(user => {

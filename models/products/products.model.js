@@ -24,6 +24,9 @@ module.exports = (sequelize, Sequelize) => {
       description_id: {
          type: Sequelize.INTEGER,
       },
+      meta_id: {
+         type: Sequelize.INTEGER,
+      },
       specification_id: {
          type: Sequelize.INTEGER,
       },

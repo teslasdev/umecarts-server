@@ -22,6 +22,7 @@ module.exports = function(app) {
    app.post("/api/product",[authJwt.verifyToken],product.create);
    app.get("/api/product/tags",[authJwt.verifyToken], product.findAllTags);
    app.get("/api/product/", [authJwt.verifyToken],product.findAll);
+   app.get("/api/product/all",product.findAllPublished);
    app.put("/api/product/status/:id", product.findAndUpdate);
    app.get("/api/product/:id", product.findOne);
    app.get("/api/product/slug/:slug", product.findbySlug);
@@ -29,6 +30,8 @@ module.exports = function(app) {
    app.post("/api/upload", upload.upload ,[authJwt.verifyToken],uploadFiles)
    app.get("/api/getFiles", upload.getFiles)
    app.get("/api/gallery",[authJwt.verifyToken],gallery.getGallery)
+   app.get("/api/getIpAddress",product.getUserIpAddress)
+   app.post("/api/addToCart",product.addToCart)
 
    async function uploadFiles(req, res ) {
       try {

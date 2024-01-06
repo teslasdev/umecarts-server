@@ -31,6 +31,7 @@ db.informaton = require("../models/products/information.model.js")(sequelize, Se
 db.Image = require("../models/products/image.model.js")(sequelize, Sequelize);
 db.video = require("../models/products/video.model.js")(sequelize, Sequelize);
 db.price = require("../models/products/price.model.js")(sequelize, Sequelize);
+db.cart = require("../models/products/cart.model.js")(sequelize, Sequelize);
 db.specification = require("../models/products/specification.model.js")(sequelize, Sequelize);
 db.meta = require("./products/meta.model.js")(sequelize, Sequelize);
 db.category = require("../models/category.model.js")(sequelize, Sequelize);
@@ -50,6 +51,7 @@ db.user.belongsToMany(db.role, {
 db.products.belongsTo(db.informaton, {foreignKey: 'information_id'})
 db.products.belongsTo(db.price, {foreignKey: 'price_id'})
 db.products.belongsTo(db.Image, {foreignKey: 'images_id'})
+db.products.belongsTo(db.meta, {foreignKey: 'meta_id'})
 db.user.belongsTo(db.wallet, {through: 'id'})
 db.ROLES = ["Buyer", "Seller", "Admin"];
 
